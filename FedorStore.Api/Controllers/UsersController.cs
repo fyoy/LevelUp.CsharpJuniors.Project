@@ -24,7 +24,6 @@ namespace FedorStore.Api.Controllers
             return Ok(users);
         }
 
-        //Добавлен метод получения продукта по его guid
         [HttpPost("user/add")]
         public async Task<IActionResult> AddUser(User user)
         {
