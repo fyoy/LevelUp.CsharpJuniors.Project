@@ -40,44 +40,6 @@ namespace FedorStore.Api.DAL.Migrations
 
                     b.ToTable("Users", (string)null);
                 });
-
-            modelBuilder.Entity("FedorStore.Api.DAL.Entities.UserPropertyValue", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PropertyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UserEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserEntityId");
-
-                    b.ToTable("UserPropertyValue");
-                });
-
-            modelBuilder.Entity("FedorStore.Api.DAL.Entities.UserPropertyValue", b =>
-                {
-                    b.HasOne("FedorStore.Api.DAL.Entities.UserEntity", null)
-                        .WithMany("Properties")
-                        .HasForeignKey("UserEntityId");
-                });
-
-            modelBuilder.Entity("FedorStore.Api.DAL.Entities.UserEntity", b =>
-                {
-                    b.Navigation("Properties");
-                });
 #pragma warning restore 612, 618
         }
     }

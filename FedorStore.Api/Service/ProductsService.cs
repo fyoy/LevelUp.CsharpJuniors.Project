@@ -7,6 +7,7 @@ namespace FedorStore.Api.Service
     public sealed class ProductsService : IProductsService
     {
         private readonly IProductsRepository _productRepository;
+
         public ProductsService(IProductsRepository productRepository)
         {
             _productRepository = productRepository;

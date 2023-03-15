@@ -7,7 +7,6 @@ namespace FedorStore.Api.Service
     public sealed class UsersService : IUsersService
     {
         private readonly IUsersRepository _usersRepository;
-
         public UsersService(IUsersRepository usersRepository)
         {
             _usersRepository = usersRepository;
@@ -30,7 +29,5 @@ namespace FedorStore.Api.Service
 
             await _usersRepository.Create(userEntity);
         }
-
-
     }
 }

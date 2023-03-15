@@ -9,7 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var dbConnString = builder.Configuration.GetConnectionString("Products");
-var dbConnStringUsers = builder.Configuration.GetConnectionString("Products");
+var dbConnStringUsers = builder.Configuration.GetConnectionString("Users");
 
 builder.Services.AddDbContext<ProductsDbContext>(options => options.UseSqlServer(dbConnString));
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
