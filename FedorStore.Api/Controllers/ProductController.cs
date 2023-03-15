@@ -22,12 +22,18 @@ namespace FedorStore.Api.Controllers
             return Ok(_productService.GetProducts());
         }
 
-        //Добавлен метод получения продукта по его guid
-        [HttpGet("getById")]
+        [HttpGet]
         public ActionResult<ProductItem> GetProductId(Guid guid)
         {
-            var act = _productService.GetProductById(guid);
-            return Ok(act);
+            var product = _productService.GetProductById(guid);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(product);
+            }
         }
     }
 }

@@ -15,13 +15,13 @@ namespace FedorStore.Api.Service
         public async Task<IEnumerable<User>> GetAllUsers()
         {
             var entities = await _userRepository.GetAllUsers();
-            return entities.Select(e => new User(e.Id, e.Name, e.isAdmin));
+            return entities.Select(e => new User(e.Id, e.Name, e.IsAdmin));
         }
 
         public async Task<User> GetUserById(Guid guid)
         {
-            var entity = await _userRepository.GetUserById();
-            return  new User(entity.Id, entity.Name, entity.isAdmin);
+            var entity = await _userRepository.GetUserById(guid);
+            return  new User(entity.Id, entity.Name, entity.IsAdmin);
         }
     }
 }

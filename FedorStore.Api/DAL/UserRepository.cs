@@ -1,4 +1,5 @@
 ﻿using FedorStore.Api.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FedorStore.Api.DAL
 {
@@ -13,12 +14,13 @@ namespace FedorStore.Api.DAL
 
         public Task<IEnumerable<UserEntity>> GetAllUsers()
         {
-            return Task.FromResult(Enumerable.Empty<UserEntity>());
+            return Task.FromResult<IEnumerable<UserEntity>>(_dbContext.Users!.ToList());
         }
 
-        public Task<UserEntity> GetUserById()
+        public Task<UserEntity> GetUserById(Guid guid)
         {
-            throw new NotImplementedException();
+            return _dbContext.Users!
+            .FirstOrDefaultAsync(e => e.Id.Equals(guid));
         }
     }
 }

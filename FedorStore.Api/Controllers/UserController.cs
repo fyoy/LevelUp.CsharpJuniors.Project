@@ -1,6 +1,5 @@
 ﻿using FedorStore.Api.Models;
 using FedorStore.Api.Service;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FedorStore.Api.Controllers
@@ -9,26 +8,31 @@ namespace FedorStore.Api.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        
-            private IUserService _userService;
+        private readonly IUserService _userService;
 
-            public UserController(IUserService userService)
-            {
-                _userService = userService;
-            }
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
 
-            [HttpGet("all")]
-            public ActionResult<IEnumerable<User>> GetAllUsers()
-            {
-                return Ok(_userService.GetAllUsers());
-            }
+        [HttpGet("all")]
+        public ActionResult<IEnumerable<User>> GetAllUsers()
+        {
+            return Ok(_userService.GetAllUsers());
+        }
 
-            //Добавлен метод получения продукта по его guid
-            [HttpGet("getById")]
-            public ActionResult<ProductItem> GetProductId(Guid guid)
+        [HttpGet]
+        public ActionResult<ProductItem> GetUserId(Guid guid)
+        {
+            var user = _userService.GetUserById(guid);
+            if (user == null)
             {
-                var act = _userService.GetUserById(guid);
-                return Ok(act);
+                return NotFound();
             }
+            else
+            {
+                return Ok(user);
+            }
+        }
     }
 }

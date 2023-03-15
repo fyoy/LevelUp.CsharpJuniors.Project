@@ -4,8 +4,6 @@
     {
         public Guid Id { get; init; }
         public string? Name { get; init; }
-        public bool isAdmin { get; init; } = false;
-
-        public IEnumerable<PropertyValue> Properties { get; set; } = Enumerable.Empty<PropertyValue>();
+        public bool IsAdmin { get; init; } = false;
     }
 }

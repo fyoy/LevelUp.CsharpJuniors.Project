@@ -5,6 +5,6 @@ namespace FedorStore.Api.DAL
     public interface IUserRepository
     {
         public Task<IEnumerable<UserEntity>> GetAllUsers();
-        public Task<UserEntity> GetUserById();
+        public Task<UserEntity> GetUserById(Guid guid);
     }
 }
