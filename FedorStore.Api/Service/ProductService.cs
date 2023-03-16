@@ -17,10 +17,12 @@ namespace FedorStore.Api.Service
         }
 
         //Добавлен метод получения продукта по его guid
-        public ProductItem GetProductById(Guid guid)
+        public ProductItem? GetProductById(Guid guid)
         {
-            var product = _products[guid];
-            return product;
+            if(_products.ContainsKey(guid))
+                return _products[guid];
+            else return null;
+            
         }
 
         private void InitProducts()
