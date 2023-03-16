@@ -4,11 +4,11 @@ using FedorStore.Api.DAL.Entities;
 
 namespace FedorStore.Api.DAL
 {
-    public class ProductsDbContext : DbContext
+    public class UsersDbContext : DbContext
     {
-        public DbSet<ProductEntity>? Products { get; set; }
+        public DbSet<UserEntity>? Users { get; set; }
 
-        public ProductsDbContext(DbContextOptions<ProductsDbContext> options) 
+        public UsersDbContext(DbContextOptions<UsersDbContext> options) 
             : base(options)
         {
         }

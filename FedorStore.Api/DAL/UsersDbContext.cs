@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using FedorStore.Api.DAL.Entities;
 using FedorStore.Api.DAL.Configurations;
+using FedorStore.Api.DAL.Entities;
 
 namespace FedorStore.Api.DAL
 {
-    public sealed class UsersDbContext : DbContext
+    public class ProductsDbContext : DbContext
     {
-        public DbSet<UserEntity>? Users { get; set; }
+        public DbSet<ProductEntity>? Products { get; set; }
 
-        public UsersDbContext(DbContextOptions<UsersDbContext> options)
+        public ProductsDbContext(DbContextOptions<ProductsDbContext> options) 
             : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
         }
     }
 }
