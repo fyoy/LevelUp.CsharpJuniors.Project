@@ -35,7 +35,11 @@ namespace FedorStore.UI.Services
 
         private async Task<T?> MakeGet<T>(string requestUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(requestUri)
+            };
 
             using var response = await _client.SendAsync(request);
             var result = await response.Content.ReadFromJsonAsync<T>();

@@ -9,12 +9,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 var endpoints = builder.Configuration.GetSection("Endpoints").Get<Endpoints>();
-
 builder.Services.AddHttpClient("default",
     (c) =>
     {
         c.BaseAddress = new Uri(endpoints.BaseUrl);
     });
+
 builder.Services.AddScoped<IOptions<Endpoints>>(_ => new OptionsWrapper<Endpoints>(endpoints));
 builder.Services.AddScoped<IProductsServiceProxy, ProductsServiceProxy>();
 
