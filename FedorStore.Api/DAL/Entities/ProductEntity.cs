@@ -12,5 +12,7 @@ public sealed record ProductEntity
     
     public bool IsActive { get; init; }
 
+    public decimal Price { get; init; }
+
     public IEnumerable<PropertyValue> Properties { get; set; } = Enumerable.Empty<PropertyValue>();
 }

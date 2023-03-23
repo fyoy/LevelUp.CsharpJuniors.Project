@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using FedorStore.Api.DAL.Entities;
-
-namespace FedorStore.Api.DAL.Configurations
+﻿namespace FedorStore.Api.DAL.Configurations
 {
     public class ProductEntityConfiguration : IEntityTypeConfiguration<ProductEntity>
     {
@@ -20,6 +16,10 @@ namespace FedorStore.Api.DAL.Configurations
             builder.Property(e => e.Description)
                 .HasColumnType("nvarchar")
                 .HasMaxLength(500);
+
+            builder.Property(e => e.Price)
+                .IsRequired()
+                .HasColumnType("decimal");
 
             builder.Property(e => e.CategoryId)
                 .IsRequired()

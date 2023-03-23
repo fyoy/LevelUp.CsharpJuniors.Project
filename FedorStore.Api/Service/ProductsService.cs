@@ -1,8 +1,4 @@
-﻿using FedorStore.Api.DAL;
-using FedorStore.Api.DAL.Entities;
-using FedorStore.Api.Models;
-
-namespace FedorStore.Api.Service
+﻿namespace FedorStore.Api.Service
 {
     public sealed class ProductsService : IProductsService
     {
@@ -13,10 +9,10 @@ namespace FedorStore.Api.Service
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<ProductItem>> GetProducts()
+        public async Task<IEnumerable<ProductItem>> GetAllProducts()
         {
             var entities = await _productRepository.GetAll();
-            return entities.Select(e => new ProductItem(e.Id, e.Name, e.CategoryId, e.Description));
+            return entities.Select(e => new ProductItem(e.Id, e.Name, e.CategoryId, e.Description,e.Price));
         }
 
         public async Task AddProduct(ProductItem productItem)
@@ -26,10 +22,18 @@ namespace FedorStore.Api.Service
                 Id = productItem.Id,
                 CategoryId = productItem.CategoryId,
                 Name = productItem.Name,
-                Description = productItem.Description
+                Description = productItem.Description,
+                Price = productItem.Price
             };
             
             await _productRepository.Create(productEntity);
+        }
+
+        public async Task<ProductItem> GetProduct(Guid id)
+        {
+          var e = await _productRepository.GetById(id);
+
+          return new ProductItem(e.Id, e.Name, e.CategoryId, e.Description, e.Price);
         }
     }
 }

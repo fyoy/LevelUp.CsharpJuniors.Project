@@ -1,6 +1,4 @@
-﻿using FedorStore.Api.DAL.Entities;
-
-namespace FedorStore.Api.DAL
+﻿namespace FedorStore.Api.DAL
 {
     public class ProductsRepository : IProductsRepository
     {
@@ -20,6 +18,20 @@ namespace FedorStore.Api.DAL
         {
             await _dbContext.Products!.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ProductEntity> GetById(Guid id)
+        {
+            var entity = await _dbContext.Products!
+                .FirstOrDefaultAsync(e => e.Id == id);
+            
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task Delete(ProductEntity entity)
+        {
+            return;
         }
     }
 }
