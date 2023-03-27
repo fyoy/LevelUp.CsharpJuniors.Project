@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace FedorStore.WebUI.Areas.Identity.Pages.Account
 {
@@ -26,7 +27,7 @@ namespace FedorStore.WebUI.Areas.Identity.Pages.Account
             ReturnUrl = Url.Content("~/");
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int createRole =0)
         {
             ReturnUrl = Url.Content("~/");
             if (ModelState.IsValid)
@@ -34,16 +35,35 @@ namespace FedorStore.WebUI.Areas.Identity.Pages.Account
                 var identity = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(identity, Input.Password);
 
-                var role = new IdentityRole(Input.Role);
-                var addRoleResult = await _roleManager.CreateAsync(role);
-
-                var addUserRoleResult = await _userManager.AddToRoleAsync(identity, Input.Role);
-
-                if (result.Succeeded && addRoleResult.Succeeded && addUserRoleResult.Succeeded)
+                if (createRole == 1)
                 {
-                    await _signInManager.SignInAsync(identity, isPersistent: false);
-                    return LocalRedirect(ReturnUrl);
+                    var role = new IdentityRole(Input.Role);
+                    var addRoleResult = await _roleManager.CreateAsync(role);
+
+                    var addUserRoleResult = await _userManager.AddToRoleAsync(identity, Input.Role);
+
+                    if (result.Succeeded && addRoleResult.Succeeded && addUserRoleResult.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(identity, isPersistent: false);
+                        return LocalRedirect(ReturnUrl);
+                    }
                 }
+                else
+                {
+                    var addUserRoleResult = await _userManager.AddToRoleAsync(identity, Input.Role);
+
+                    if(addUserRoleResult.Errors.Any())
+                    {
+                        var role = new IdentityRole(Input.Role);
+                        var addRoleResult = await _roleManager.CreateAsync(role);
+                    }
+                    if (result.Succeeded && addUserRoleResult.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(identity, isPersistent: false);
+                        return LocalRedirect(ReturnUrl);
+                    }
+                }
+                
             }
 
             return Page();
@@ -59,7 +79,7 @@ namespace FedorStore.WebUI.Areas.Identity.Pages.Account
             public string Password { get; set; }
 
             [Required]
-            public string Role { get; set; } = "Client";
+            public string Role { get => "Client"; }
         }
     }
 }

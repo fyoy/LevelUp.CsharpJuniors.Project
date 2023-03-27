@@ -2,19 +2,87 @@
 @using FedorStore.WebUI.Models
 @using FedorStore.WebUI.Services
 
-@inject IProductsServiceProxy Proxy
+@inject IProductsServiceProxy ProductsServiceProxy
 
-<h3>Products</h3>
-@foreach (var product in _products)
-{
-    <li>@($"{product.Id} - {product.Name} - {product.Description}")</li>
-}
+@inject NavigationManager NavigationManager
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+<section class="featured-products">
+    <div class="container">
+        <div class="row justify-content-center align-items-center text-center">
+            <div class="col-md-8">
+                <h2>Добро пожаловать!</h2>
+                <p class="mt-4 mb-4">Оцените наши товары.</p>
+            </div>
+        </div>
+        <button Enabled='<%# HttpContext.Current.User.IsInRole("Admin") %>'  class="btn btn-primary" @onclick="CreateNewProduct">Добавить продукт</button>
+    <div class="row mt-4">
+    @foreach (var product in _products)
+    {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                            <img @onclick="(() => ShowProduct(product.Id))" src="https://thumbs.gfycat.com/AdeptScentedAidi-max-1mb.gif" class="card-img-top" alt="Sourdough">
+                            <h5 class="card-title">@($"{product.Name}")</h5>
+                            <p class="card-text">@($"{product.Description}")</p>
+                            <p class="card-text text-sm-end">@($"{product.Price} рублей")</p>
+                            <button class="btn btn-primary" @onclick="(() => ShowProduct(product.Id))">Править  <i class="oi oi-pencil"></i></button>
+                    </div>
+                </div>
+            </div>  
+    }
+    </div>
+    </div>
+</section>
+</Authorized>
+<NotAuthorized>
+        <section class="featured-products">
+            <div class="container">
+                <div class="row justify-content-center align-items-center text-center">
+                    <div class="col-md-8">
+                        <h2>Добро пожаловать!</h2>
+                        <p class="mt-4 mb-4">Оцените наши товары.</p>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    @foreach (var product in _products)
+                    {
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img @onclick="(() => ShowProduct(product.Id))" src="https://thumbs.gfycat.com/AdeptScentedAidi-max-1mb.gif" class="card-img-top" alt="Sourdough">
+                                    <h5 class="card-title">@($"{product.Name}")</h5>
+                                    <p class="card-text">@($"{product.Description}")</p>
+                                    <p class="card-text text-sm-end">@($"{product.Price} рублей")</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+</NotAuthorized>
+</AuthorizeView>
+
 
 @code {
+
     private IEnumerable<ProductItem> _products = Enumerable.Empty<ProductItem>();
 
     protected override async Task OnInitializedAsync()
     {
-        _products = await Proxy.GetAllProducts();
+        _products = await ProductsServiceProxy.GetAllProducts();
+    }
+
+    void ShowProduct(Guid id)
+    {
+        NavigationManager.NavigateTo($"product/{id}");
+    }
+
+    void CreateNewProduct()
+    {
+        NavigationManager.NavigateTo("product/create");
     }
 }

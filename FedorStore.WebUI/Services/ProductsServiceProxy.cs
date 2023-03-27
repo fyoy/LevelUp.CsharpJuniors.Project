@@ -1,5 +1,8 @@
 ﻿using FedorStore.WebUI.Models;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static System.Net.WebRequestMethods;
 
 namespace FedorStore.WebUI.Services
 {
@@ -9,10 +12,13 @@ namespace FedorStore.WebUI.Services
 
         private readonly Endpoints _endpoints;
 
-        public ProductsServiceProxy(HttpClient client, IOptions<Endpoints> endpoints)
+        private readonly NavigationManager _navigationManager;
+
+        public ProductsServiceProxy(HttpClient client, IOptions<Endpoints> endpoints, NavigationManager navigationManager)
         {
             _client = client;
             _endpoints = endpoints.Value;
+            _navigationManager = navigationManager;
         }
 
         public async Task<IEnumerable<ProductItem>> GetAllProducts()
@@ -31,6 +37,28 @@ namespace FedorStore.WebUI.Services
             var item = await MakeGet<ProductItem>(requestUri);
 
             return item!;
+        }
+
+        public async Task CreateProduct(ProductItem productItem)
+        {
+            var requestUri = $"{_endpoints.BaseUrl}{_endpoints.CreateProduct}";
+            await _client.PostAsJsonAsync(requestUri, productItem);
+
+            _navigationManager.NavigateTo("/products");
+        }
+
+        public async Task DeleteProduct (Guid id)
+        {
+            var requestUri = $"{_endpoints.BaseUrl}{_endpoints.DeleteProduct}";
+            requestUri = string.Format(requestUri, id);
+            await _client.DeleteAsync(requestUri);
+
+            _navigationManager.NavigateTo("/products");
+        }
+
+        public async Task UpdateProduct(ProductItem productItem)
+        {
+            await _client.PutAsJsonAsync($"{_endpoints.BaseUrl}{_endpoints.UpdateProduct}", productItem);
         }
 
         private async Task<T?> MakeGet<T>(string requestUri)

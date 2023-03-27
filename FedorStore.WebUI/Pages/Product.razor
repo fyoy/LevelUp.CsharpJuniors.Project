@@ -1,0 +1,97 @@
+﻿@page "/product/{id:guid}"
+
+@using FedorStore.WebUI.Models
+@using FedorStore.WebUI.Services
+
+@inject IProductsServiceProxy ProductsServiceProxy
+
+<PageTitle>Карточка @p.N</PageTitle>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>      
+        <h3>Редактирование @p.N</h3>
+    
+        <EditForm Model="p" OnSubmit="HandleSubmit" Context="Admin">
+        <div>
+            <label for="name">Название</label>
+            <InputText id="Name" @bind-Value="@p.N" class="form-control"></InputText>
+        </div>
+        <div>
+            <label for="description">Описание</label>
+            <InputText id="description" @bind-Value="@p.D" class="form-control"></InputText>
+        </div>
+        <div>
+        <label for="price">Цена</label>
+            <InputText id="price" @bind-Value="@p.P" class="form-control"></InputText>
+        </div>
+        <br />
+        
+        <button type="submit" class="btn btn-primary">Обновить</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteProduct">Удалить</button>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Карточка @p.N</h3>
+   
+        <div>
+            <label for="name">Название</label>
+            <p>@p.N</p>
+        </div>
+        <div>
+            <label for="description">Описание</label>
+            <p>@p.D</p>
+        </div>
+        <div>
+        <label for="price">Цена</label>
+            <p>@p.P</p>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+    
+
+@code{
+    [Parameter]
+    public Guid Id { get; set; }
+
+    string btnText = string.Empty;
+
+    private ProductItem product;//= new ProductItem(Guid.NewGuid(), " ", Guid.Empty, " ", decimal.Zero);
+
+    private ProductE p = new(Guid.NewGuid(),"","","");
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await ProductsServiceProxy.GetProductById((Guid)Id);
+        p.I = product.Id.ToString();
+        p.N = product.Name;
+        p.D = product.Description;
+        p.P = product.Price.ToString();
+    }
+
+    async Task HandleSubmit()
+    {
+        var product = new ProductItem(new Guid(p.I), p.N, Guid.NewGuid(), p.D, Convert.ToDecimal(p.P));
+        await ProductsServiceProxy.UpdateProduct(product);
+    }
+
+    async Task DeleteProduct()
+    {
+        await ProductsServiceProxy.DeleteProduct(product.Id);
+    }
+
+    public class ProductE
+    {
+        public string N { get; set; }
+        public string D{ get; set; }
+        public string P { get; set; }
+        public string I { get; set; }
+
+        public ProductE (Guid Guid,string Name, string Desc, string Pric)
+        {
+            I = Guid.ToString();
+            N = Name;
+            D = Desc;
+            P = Pric;
+        }
+    }
+}

@@ -1,12 +1,13 @@
+using FedorStore.WebUI;
 using FedorStore.WebUI.DAL;
 using FedorStore.WebUI.Models;
 using FedorStore.WebUI.Services;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -34,6 +35,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
     options.AddPolicy("ClientOnly", policy => policy.RequireRole("Client"));
 });
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(endpoints.BaseUrl) });
+
 
 var app = builder.Build();
 

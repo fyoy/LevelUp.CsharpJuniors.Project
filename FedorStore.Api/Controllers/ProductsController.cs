@@ -1,5 +1,7 @@
-﻿using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+﻿using HttpDeleteAttribute = Microsoft.AspNetCore.Mvc.HttpDeleteAttribute;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using HttpPutAttribute = Microsoft.AspNetCore.Mvc.HttpPutAttribute;
 
 namespace FedorStore.Api.Controllers
 {
@@ -33,6 +35,20 @@ namespace FedorStore.Api.Controllers
         {
             var result = await _productsService.GetProduct(id);
             return Ok(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateProduct(ProductItem product)
+        {
+            await _productsService.UpdateProduct(product);
+            return Ok(product);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<ActionResult>  DeleteProduct(Guid id)
+        {
+            await _productsService.DeleteProduct(id);
+            return Ok();
         }
     }
 }
