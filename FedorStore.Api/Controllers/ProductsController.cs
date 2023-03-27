@@ -1,12 +1,12 @@
-﻿using FedorStore.Api.Models;
-using FedorStore.Api.Service;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using HttpDeleteAttribute = Microsoft.AspNetCore.Mvc.HttpDeleteAttribute;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using HttpPutAttribute = Microsoft.AspNetCore.Mvc.HttpPutAttribute;
 
 namespace FedorStore.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("[controller]")]
     public sealed class ProductsController : ControllerBase
     {
         private IProductsService _productsService;
@@ -17,16 +17,37 @@ namespace FedorStore.Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<ProductItem>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductItem>>> GetAllProducts()
         {
-            var products = await _productsService.GetProducts();
+            var products = await _productsService.GetAllProducts();
             return Ok(products);
         }
 
-        [HttpPost("product/add")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddProduct(ProductItem productItem)
         {
             await _productsService.AddProduct(productItem);
+            return Ok(productItem);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductItem>> GetProduct(Guid id)
+        {
+            var result = await _productsService.GetProduct(id);
+            return Ok(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateProduct(ProductItem product)
+        {
+            await _productsService.UpdateProduct(product);
+            return Ok(product);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<ActionResult>  DeleteProduct(Guid id)
+        {
+            await _productsService.DeleteProduct(id);
             return Ok();
         }
     }

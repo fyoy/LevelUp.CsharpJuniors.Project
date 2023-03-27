@@ -1,14 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using FedorStore.Api.DAL.Configurations;
-using FedorStore.Api.DAL.Entities;
-
-namespace FedorStore.Api.DAL
+﻿namespace FedorStore.Api.DAL
 {
-    public class UsersDbContext : DbContext
+    public class ProductsDbContext : DbContext
     {
-        public DbSet<UserEntity>? Users { get; set; }
+        public DbSet<ProductEntity>? Products { get; set; }
 
-        public UsersDbContext(DbContextOptions<UsersDbContext> options) 
+        public ProductsDbContext(DbContextOptions<ProductsDbContext> options) 
             : base(options)
         {
         }

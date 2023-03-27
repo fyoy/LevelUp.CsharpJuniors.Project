@@ -1,0 +1,26 @@
+﻿@page "/counter"
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <h1>Счетчик</h1>
+
+        <p role="status">Текущий счет: @currentCount</p>
+
+        <button class="btn btn-primary" @onclick="IncrementCount">Прибавить</button>
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">Доступ ограничен</p>
+    </NotAuthorized>
+</AuthorizeView>
+<PageTitle>Counter</PageTitle>
+
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

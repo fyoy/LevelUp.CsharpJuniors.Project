@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedorStore.Api", "FedorStore.Api.csproj", "{161A3502-E6A9-4841-A833-E7B343556CED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FedorStore.Api", "FedorStore.Api.csproj", "{161A3502-E6A9-4841-A833-E7B343556CED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FedorStore.WebUI", "..\FedorStore.WebUI\FedorStore.WebUI.csproj", "{CCAF38C7-68B8-48A4-A8C2-69716DC85EDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{161A3502-E6A9-4841-A833-E7B343556CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161A3502-E6A9-4841-A833-E7B343556CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161A3502-E6A9-4841-A833-E7B343556CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCAF38C7-68B8-48A4-A8C2-69716DC85EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCAF38C7-68B8-48A4-A8C2-69716DC85EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCAF38C7-68B8-48A4-A8C2-69716DC85EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCAF38C7-68B8-48A4-A8C2-69716DC85EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

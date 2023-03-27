@@ -1,0 +1,59 @@
+﻿@page "/product/create"
+
+@using FedorStore.WebUI.Models
+@using FedorStore.WebUI.Services
+
+@inject IProductsServiceProxy ProductsServiceProxy
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <PageTitle>Создание карточки продукта</PageTitle>
+            <h3>Создание нового продукта</h3>
+
+        <EditForm Model="p" OnSubmit="HandleSubmit" Context="Admin">
+        <div>
+            <label for="name">Название</label>
+            <InputText id="Name" @bind-Value="@p.N" class="form-control"></InputText>
+        </div>
+        <div>
+            <label for="description">Описание</label>
+            <InputText id="description" @bind-Value="@p.D" class="form-control"></InputText>
+        </div>
+        <div>
+            <label for="price">Цена</label>
+            <InputText id="price" @bind-Value="@p.P" class="form-control"></InputText>
+        </div>
+        <br />
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </EditForm>
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private ProductE p = new(Guid.NewGuid(), "", "", "");
+
+    async Task HandleSubmit()
+    {
+        var product = new ProductItem(Guid.NewGuid(), p.N, Guid.NewGuid(), p.D, Convert.ToDecimal(p.P));
+        await ProductsServiceProxy.CreateProduct(product);
+    }
+
+    public class ProductE
+    {
+        public string N { get; set; }
+        public string D { get; set; }
+        public string P { get; set; }
+        public string I { get; set; }
+
+        public ProductE(Guid Guid, string Name = " ", string Desc = " ", string Pric = "0")
+        {
+            I = Guid.ToString();
+            N = Name;
+            D = Desc;
+            P = Pric;
+        }
+    }
+}
